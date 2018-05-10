@@ -7,7 +7,12 @@ class PrefUtil {
 
     companion object {
 
+        private const val TIMER_LENGTH_ID = "com.resocoder.timer.timer_length"
+
         fun getTimerLength(context: Context): Int {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+            return preferences.getInt(TIMER_LENGTH_ID,10)
             //placeholder
             return 1
         }

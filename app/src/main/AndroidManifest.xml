@@ -20,7 +20,27 @@
         <receiver
             android:name=".TimerExpiredReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
+        <receiver
+            android:name=".TimerNotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="stop" />
+                <action android:name="pause" />
+                <action android:name="resume" />
+                <action android:name="start" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".Settings"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.annotation.RequiresApi
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_timer.*
 import java.util.*
@@ -54,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setIcon(R.drawable.ic_timer)
         supportActionBar?.title = "     Timer"
 
@@ -119,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         initTimer()
 
         removeAlarm(this)
+        NotificationUtils.hideTimerNotification(this)
         //TODO : remove background timer, hide notification
     }
 
@@ -129,9 +133,12 @@ class MainActivity : AppCompatActivity() {
         if (timerState == TimerState.Running) {
             timer.cancel()
             val wakeUpTime = setAlarm(this, nowSeconds,secondRemaining)
+            NotificationUtils.showTimerRunning(this,wakeUpTime)
 
             //TODO : start background timer and show notification
         } else if (timerState == TimerState.Paused) {
+
+            NotificationUtils.showTimerPaused(this)
 
             //TODO : show notification
 
@@ -204,7 +211,27 @@ class MainActivity : AppCompatActivity() {
                 fab_stop.isEnabled = true
             }
         }
-
-
     }
-}
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_timer,menu)
+        return true
+    }
+
+
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            return when (item.itemId) {
+                R.id.action_settings -> {
+                    val intent = Intent(this, Settings::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+
+        }
+    }
+
